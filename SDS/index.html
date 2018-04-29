@@ -1,0 +1,289 @@
+<html>
+    <head>
+
+        <title>JSChart</title>
+        <script type="text/javascript" src="../../../sources/jscharts.js"></script>
+        <style>
+			hr{height:5px;
+			background-color:#818189;}
+			h1{
+			color:#818189;
+			padding:30px;
+			}
+			body{
+			padding:0;
+			top-margin:0;
+			}
+			
+            table{
+			margin:100;
+			position:relative;
+            width: 500px;
+		
+            }
+			
+            td{
+            width: 100px;
+            }
+	#bx{
+	possition:absolute;
+	margin-top:100px;
+	background-color:black;
+	float:left;
+	float:
+	width:240px;
+	height:85px;
+	text-align:center;
+	margin:20;
+	}
+	#bo{
+		margin:0;
+		padding:0;
+		background-color:#eeeeee;
+		width:1365px;
+		height:90px;}
+	#buton{
+		 position: fixed;
+    top: 120px;
+    right:5px;
+			}
+	
+        </style>
+    </head>
+    
+    <body>
+		
+		<div id="bo">
+		
+	<center><h1><b>Leveling Sheet</b></h1></center>
+	</div>
+        <center>
+        <form name="my" >
+            <table border="2px solid black" align="center" id="myT">
+                <tr> <th>BackSight</th> <th>Inter Sight</th> <th>ForeSight</th> <th>Rice</th> <th>Fall</th> <th>Reduse Level</th> <th>Length</th> </tr>
+                <tr> <td><input type="text"></td> <td><input type="text"></td> <td><input type="text"></td> <td></td> <td></td> <td></td> <td><input type="text"></td> </tr>
+                <tr> <td><input type="text"></td> <td><input type="text"></td> <td><input type="text"></td> <td></td> <td></td> <td></td> <td><input type="text"></td> </tr>
+                <tr> <td><input type="text"></td> <td><input type="text"></td> <td><input type="text"></td> <td></td> <td></td> <td></td> <td><input type="text"></td> </tr>
+                <tr> <td><input type="text"></td> <td><input type="text"></td> <td><input type="text"></td> <td></td> <td></td> <td></td> <td><input type="text"></td> </tr>
+                <tr> <td><input type="text"></td> <td><input type="text"></td> <td><input type="text"></td> <td></td> <td></td> <td></td> <td><input type="text"></td> </tr>
+                <tr> <td><input type="text"></td> <td><input type="text"></td> <td><input type="text"></td> <td></td> <td></td> <td></td> <td><input type="text"></td> </tr>
+             </table>
+        </form>
+		</center>
+		<div id="buton">
+        <form name="my2">
+            Level:<input type="text" value="100.00">
+        </form>
+			
+        <button type="button" onClick="myf()" >Calculat</button> 
+        <button type="button" onClick="creatNewRow()" >New Row</button>
+        
+		</div>
+		
+        <div id="graph"></div>
+		<div id="bo2">
+		</div>
+        
+        
+        <script type="text/javascript">
+
+            function myf()
+            {
+                var col1=[];//array structure for store collume1 data
+                var col2=[];//array structure for store collume2 data
+                var col3=[];//array structure for store collume3 data
+                var col7=[];//array structure for store collume7 data
+                var res1=[];//store coerted data from col1
+                var res2=[];//store coerted data from col2
+                var res3=[];//store coerted data from col3
+                var res7=[];//store coerted data from col7
+                var level;
+                var count1=0;
+                var count2=0;
+                var count3=0;
+                var count4=0;
+                var NoOfRows=document.getElementById("myT").rows.length;
+                var sizeOfTable=NoOfRows*7;
+                var sizeOfForm=(NoOfRows-1)*4;
+               /* var x=document.my.elements[sizeOfForm-1].value                  
+                document.getElementById("d").innerHTML=x;*/
+               
+               for(i=0;i<(sizeOfForm-3);i=i+4)
+                {
+                    col1[count1]=document.my.elements[i].value;
+                    count1++;                
+                } 
+                
+                for(i=1;i<(sizeOfForm-2);i=i+4)
+                {
+                    col2[count2]=document.my.elements[i].value;
+                    count2++;                
+                } 
+                
+                for(i=2;i<(sizeOfForm-1);i=i+4)
+                {
+                    col3[count3]=document.my.elements[i].value;
+                    count3++;                
+                }
+                
+                for(i=3;i<(sizeOfForm);i=i+4)
+                {
+                    col7[count4]=document.my.elements[i].value;
+                    count4++;                
+                }
+                
+                
+                var lev=document.my2.elements[0].value;
+                level=parseFloat(lev);
+                
+                for(i=1;i<NoOfRows;i++)
+                {
+                    res1.push(+col1[i-1]);
+                    res2.push(+col2[i-1]);
+                    res3.push(+col3[i-1]);
+                    res7.push(+col7[i-1]);
+                }                
+               
+                
+                
+                if(res1[0]==0)
+                {
+                    alert("Error");
+                }
+                else
+                {
+                     for(j=0;j<(NoOfRows-1);j++)
+                     {
+                         if(res1[j]!==0)
+                         {
+                             var result=res1[j]*1000-res2[j+1]*1000;
+                         }
+                         else if(res2[j+1]!==0)
+                         {
+                             var result=res2[j]*1000-res2[j+1]*1000;
+                         }
+                         else if(res3[j+1]!=0)
+                         {
+                             var result=res2[j]*1000-res3[j+1]*1000;
+                         }
+                         else
+                         {
+                             alert("Error in row "+j)
+                         }
+                         
+                         if(result<0)
+                         {                        
+                            document.getElementById("myT").rows[j+2].cells[3].innerHTML=result/1000;
+                         }
+                         else
+                         {
+                              document.getElementById("myT").rows[j+2].cells[4].innerHTML=result/1000;
+                         }
+                            level=(level*1000+result)/1000;
+                            //document.getElementById("myT").rows[0].cells[5].innerHTML=level;
+                            document.getElementById("myT").rows[j+2].cells[5].innerHTML=level;  
+                            document.getElementById("myT").rows[1].cells[5].innerHTML=lev;  
+                        
+                     }
+                    
+                   /* var x = document.getElementById("myT").rows.length;
+                    document.getElementById("d").innerHTML=x;*/
+                }   
+                
+                /*for(i=1;i<NoOfRows;i++)
+                {
+                   document.getElementById("d").innerHTML=res7[i-1]; 
+                }*/
+                document.getElementById("demo").innerHTML=res7[i-1]; 
+            }
+            
+            function  creatNewRow()
+            {
+                var table = document.getElementById("myT");
+                var newRow=table.insertRow(-1);
+                
+                var cell0=newRow.insertCell(0);
+                var cell1=newRow.insertCell(1);                
+                var cell2=newRow.insertCell(2);
+                var cell3=newRow.insertCell(3);
+                var cell4=newRow.insertCell(4);
+                var cell5=newRow.insertCell(5);
+                var cell6=newRow.insertCell(6);
+                
+                /*var input0 = document.createElement("input");
+                input0.type = "text";
+                var input1 = document.createElement("input");
+                input1.type = "text";
+                var input2 = document.createElement("input");
+                input2.type = "text";
+                
+                cell0.appendChild(input0);
+                cell1.appendChild(input1);
+                cell2.appendChild(input2);*/
+                cell0.innerHTML='<input type="text">';
+                cell1.innerHTML='<input type="text">';
+                cell2.innerHTML='<input type="text">';
+                cell6.innerHTML='<input type="text">';
+            }
+            
+            /*function twoDArray() 
+            {
+                var col6=[];
+                var col7=[];//array structure for store collume7 data
+                var res6=[];
+                var res7=[];//store coerted data from col7
+                var count4=0;
+                var count5=0;
+                var NoOfRows=document.getElementById("myT").rows.length;
+                var sizeOfTable=NoOfRows*7;
+                var sizeOfForm=(NoOfRows-1)*4;
+                
+                for(i=3;i<(sizeOfForm);i=i+4)
+                {
+                    col7[count4]=document.my.elements[i].value;
+                    count4++;                
+                }
+                
+                for(i=1;i<NoOfRows;i++)
+                {
+                    col6[count5]=document.getElementById("myT").rows[i].cells[5].innerHTML;
+                    count5++;
+                }
+                
+                for(i=1;i<NoOfRows;i++)
+                {
+                    res6.push(+col6[i-1])
+                    res7.push(+col7[i-1]);
+                }
+                
+
+                var i, newArray = [];
+                for(i=0;i<res7.length;i++)
+                {
+                    newArray.push([res7[i],res6[i]]);
+                }
+
+                console.log(newArray);
+
+                return newArray;
+            }
+            function drawGraph()
+            {
+            //var myData = new Array([10, 2], [15, 0], [17, 3], [19, 6], [20, 8.5], [25, 8], [30, 9], [35, 8], [40, 5], [45, 6], [50, 2.5]);
+            var myData=twoDArray();
+            var myChart = new JSChart('graph', 'line');
+            myChart.setDataArray(myData);
+            myChart.setLineColor('#8D9386');
+            myChart.setLineWidth(4);
+            myChart.setTitleColor('#7D7D7D');
+            myChart.setAxisColor('#9F0505');
+            myChart.setGridColor('#a4a4a4');
+            myChart.setAxisValuesColor('#333639');
+            myChart.setAxisNameColor('#333639');
+            myChart.setTextPaddingLeft(0);
+            myChart.draw();
+            }*/
+        </script>
+
+    </body>
+</html>
